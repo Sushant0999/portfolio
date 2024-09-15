@@ -1,0 +1,13 @@
+.navbar {
+    position: fixed; /* or absolute, relative */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10; /* Make sure the navbar is above other content */
+  }
+  
+  .box {
+    position: relative; /* or absolute, fixed depending on your layout */
+    z-index: 5; /* Ensure this is lower than the navbar */
+    /* Other styling */
+  }
