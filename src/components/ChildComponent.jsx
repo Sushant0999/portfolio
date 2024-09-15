@@ -1,6 +1,5 @@
 import '../css/bubble.css'
 
-// ChildComponent.js
 
 import React from 'react';
 
