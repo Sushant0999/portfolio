@@ -1,5 +1,10 @@
 package com.app.portfolio.config;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+import org.springframework.web.filter.CorsFilter;
 
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -40,7 +38,7 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/v2/api-docs/**",
             "/swagger-resources/**",
-            "/swagger-ui.html"
+            "/swagger-ui/**",
     };
 
 
@@ -48,7 +46,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeRequests(authorizeRequests -> authorizeRequests
+                .cors(AbstractHttpConfigurer::disable) //TODO will handle it later
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(PUBLIC_URLS).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -61,44 +60,46 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo())
-                .securitySchemes(List.of(apiKey()));
+    public OpenAPI api() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Portfolio REST API Document")
+                        .description("Portfolio")
+                        .version("1.0"))
+                .servers(List.of(
+                        new Server().url("http://localhost:8181").description("Local Server"),
+                        new Server().url("https://portfolio-ilke.onrender.com").description("Stag Server")
+                        ))
+                .addSecurityItem(new SecurityRequirement().addList("jwtToken"))
+                .components(new io.swagger.v3.oas.models.Components()
+                        .addSecuritySchemes("jwtToken", new SecurityScheme()
+                                .name("Authorization")
+                                .type(SecurityScheme.Type.APIKEY)
+                                .in(SecurityScheme.In.HEADER)));
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("Sig-Predict REST API Document")
-                .description("portfolio")
-                .termsOfServiceUrl("localhost")
-                .version("1.0")
-                .build();
-    }
-
-    private ApiKey apiKey() {
-        return new ApiKey("jwtToken", "Authorization", "header");
-    }
 
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowedOrigins(List.of("http://localhost:9000"));
+        configuration.setAllowedOrigins(List.of("*")); //TODO will handle it later
         configuration.setAllowedMethods(List.of("GET", "POST"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:8080");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }

@@ -10,7 +10,8 @@ public class UserDao {
 
     @Autowired
     private UserRepository userRepository;
+
     public User findByEmail(String emailId) {
-       return userRepository.findByEmail(emailId);
+        return userRepository.findByEmail(emailId);
     }
 }
