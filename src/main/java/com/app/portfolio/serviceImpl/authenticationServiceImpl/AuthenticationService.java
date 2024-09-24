@@ -10,23 +10,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthenticationService {
 
     @Autowired
-    private  MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private  PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private  AuthenticationManager authenticationManager;
-
+    private AuthenticationManager authenticationManager;
 
 
     public Member signup(RegisterUserDto input) {
         Member member = new Member();
-
         member.setUsername(input.getFullName());
         member.setEmail(input.getEmail());
         member.setPassword(passwordEncoder.encode(input.getPassword()));
@@ -43,5 +43,14 @@ public class AuthenticationService {
 
         return memberRepository.findByEmail(input.getUsername())
                 .orElseThrow();
+    }
+
+    public boolean existByEmail(JwtRequest input) {
+        Optional<Member> member = memberRepository.findByEmail(input.getUsername());
+        if (member.isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -76,6 +76,8 @@ public class SecurityConfig {
                         .addSecuritySchemes("jwtToken", new SecurityScheme()
                                 .name("Authorization")
                                 .type(SecurityScheme.Type.APIKEY)
+//                                .scheme("bearer")
+//                                .type(SecurityScheme.Type.HTTP)
                                 .in(SecurityScheme.In.HEADER)));
     }
 
