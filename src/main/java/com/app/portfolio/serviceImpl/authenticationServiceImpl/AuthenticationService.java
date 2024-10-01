@@ -3,7 +3,9 @@ package com.app.portfolio.serviceImpl.authenticationServiceImpl;
 import com.app.portfolio.dto.JwtRequest;
 import com.app.portfolio.dto.RegisterUserDto;
 import com.app.portfolio.entity.Member;
+import com.app.portfolio.entity.User;
 import com.app.portfolio.repository.MemberRepository;
+import com.app.portfolio.repository.userRepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +19,9 @@ public class AuthenticationService {
     private  MemberRepository memberRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private  PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -24,13 +29,13 @@ public class AuthenticationService {
 
 
 
-    public Member signup(RegisterUserDto input) {
-        Member member = new Member();
+    public User signup(RegisterUserDto input) {
+        User user = new User();
 
-        member.setUsername(input.getFullName());
-        member.setEmail(input.getEmail());
-        member.setPassword(passwordEncoder.encode(input.getPassword()));
-        return memberRepository.save(member);
+        user.setName(input.getFullName());
+        user.setEmail(input.getEmail());
+        user.setPassword(passwordEncoder.encode(input.getPassword()));
+        return userRepository.save(user);
     }
 
     public Member authenticate(JwtRequest input) {

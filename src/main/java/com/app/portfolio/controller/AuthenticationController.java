@@ -1,7 +1,7 @@
 package com.app.portfolio.controller;
 
 
-import com.app.portfolio.service.authenticationService.MemberService;
+import com.app.portfolio.entity.User;
 import com.app.portfolio.constants.RequestMappingConstants;
 import com.app.portfolio.dto.JwtRequest;
 import com.app.portfolio.dto.LoginResponse;
@@ -25,13 +25,10 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @Autowired
-    private MemberService memberService;
-
 
     @RequestMapping(value = RequestMappingConstants.SIGNUP, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<Member> register(@RequestBody RegisterUserDto registerUserDto) {
-        Member registeredUser = authenticationService.signup(registerUserDto);
+    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+        User registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
     }
