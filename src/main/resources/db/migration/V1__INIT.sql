@@ -1,14 +1,16 @@
 -- Create the Users Table
 CREATE TABLE User (
-    user_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    bio TEXT,
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    bio VARCHAR(255),
     profile_pic VARCHAR(255),
-    location VARCHAR(100),
+    location VARCHAR(255),
     linkedin_url VARCHAR(255),
     github_url VARCHAR(255)
 );
+
 
 -- Create the Projects Table
 CREATE TABLE Project (
@@ -77,13 +79,5 @@ CREATE TABLE Certificates (
     issue_date DATE,
     expiration_date DATE,
     FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE member (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL
 );
 

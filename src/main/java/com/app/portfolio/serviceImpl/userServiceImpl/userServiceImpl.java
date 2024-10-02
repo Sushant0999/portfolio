@@ -1,6 +1,7 @@
 package com.app.portfolio.serviceImpl.userServiceImpl;
 
 import com.app.portfolio.dao.userDao.UserDao;
+import com.app.portfolio.dto.UserResponseDto;
 import com.app.portfolio.entity.User;
 import com.app.portfolio.service.userService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,5 +17,10 @@ public class userServiceImpl implements UserService {
     @Override
     public User findByEmail(String emailId) {
         return userDao.findByEmail(emailId);
+    }
+
+    @Override
+    public User updateUser(UserResponseDto userResponseDto, String emailId) {
+        return userDao.updateUser(userResponseDto, emailId);
     }
 }

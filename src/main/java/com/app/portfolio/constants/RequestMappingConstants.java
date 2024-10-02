@@ -6,5 +6,7 @@ public class RequestMappingConstants {
     public static final String SIGNUP = "signup";
 
     public static final String GETUSER = "get/user";
+    public static final String UPDATEUSER = "update/user";
+
     public static final String USERAPIVERSION = "/api/v1/user/";
 }
