@@ -3,7 +3,7 @@ package com.app.portfolio.serviceImpl.userServiceImpl;
 import com.app.portfolio.dao.userDao.UserDao;
 import com.app.portfolio.dto.UserResponseDto;
 import com.app.portfolio.entity.User;
-import com.app.portfolio.service.userService.UserService;
+import com.app.portfolio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class userServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserResponseDto userResponseDto, String emailId) {
+    public UserResponseDto updateUser(UserResponseDto userResponseDto, String emailId) {
         return userDao.updateUser(userResponseDto, emailId);
     }
 }

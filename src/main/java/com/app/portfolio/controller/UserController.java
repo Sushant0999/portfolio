@@ -4,8 +4,9 @@ import com.app.portfolio.constants.CommonConstants;
 import com.app.portfolio.constants.RequestMappingConstants;
 import com.app.portfolio.dto.UserResponseDto;
 import com.app.portfolio.entity.User;
+import com.app.portfolio.helper.UserMapper;
 import com.app.portfolio.model.UserResult;
-import com.app.portfolio.service.userService.UserService;
+import com.app.portfolio.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,9 +28,10 @@ public class UserController {
         try {
             User user = userService.findByEmail(emailId);
             if (user == null) {
-                return new ResponseEntity<>(new UserResult<>(user, HttpStatus.NOT_FOUND, CommonConstants.EXCEPTION), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new UserResult<>(null, HttpStatus.NOT_FOUND, CommonConstants.EXCEPTION), HttpStatus.NOT_FOUND);
             } else {
-                return ResponseEntity.ok(new UserResult<>(user, HttpStatus.OK, CommonConstants.SUCCESS));
+                UserResponseDto responseDto = UserMapper.toDto(user);
+                return ResponseEntity.ok(new UserResult<>(responseDto, HttpStatus.OK, CommonConstants.SUCCESS));
             }
         } catch (Exception e) {
             return new ResponseEntity<>(new UserResult<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, CommonConstants.EXCEPTION), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -41,14 +43,10 @@ public class UserController {
         try {
             User user = userService.findByEmail(emailId);
             if (user == null) {
-                return new ResponseEntity<>(new UserResult<>(user, HttpStatus.NOT_FOUND, CommonConstants.EXCEPTION), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new UserResult<>(null, HttpStatus.NOT_FOUND, CommonConstants.EXCEPTION), HttpStatus.NOT_FOUND);
             } else {
-                User updatedUser = userService.updateUser(userResponseDto, emailId);
-                if (updatedUser == null) {
-                    return new ResponseEntity<>(new UserResult<>(null, HttpStatus.INTERNAL_SERVER_ERROR, CommonConstants.EXCEPTION), HttpStatus.INTERNAL_SERVER_ERROR);
-                } else {
-                    return ResponseEntity.ok(new UserResult<>(user, HttpStatus.OK, CommonConstants.SUCCESS));
-                }
+                UserResponseDto updatedUser = userService.updateUser(userResponseDto, emailId);
+                return ResponseEntity.ok(new UserResult<>(updatedUser, HttpStatus.OK, CommonConstants.SUCCESS));
             }
         } catch (Exception e) {
             return new ResponseEntity<>(new UserResult<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, CommonConstants.EXCEPTION), HttpStatus.INTERNAL_SERVER_ERROR);

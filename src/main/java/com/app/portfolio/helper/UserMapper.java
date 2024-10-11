@@ -2,9 +2,6 @@ package com.app.portfolio.helper;
 
 import com.app.portfolio.dto.UserResponseDto;
 import com.app.portfolio.entity.User;
-import com.app.portfolio.service.userService.UserService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,23 +9,23 @@ public class UserMapper {
 
     // Convert User entity to UserResponseDto
     public static UserResponseDto toDto(User user) {
-        return new UserResponseDto(
-                user.getName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getBio(),
-                user.getProfilePic(),
-                user.getLocation(),
-                user.getLinkedinUrl(),
-                user.getGithubUrl(),
-                user.getProjects(),
-                user.getSkills(),
-                user.getExperiences(),
-                user.getEducationList(),
-                user.getContacts(),
-                user.getCertificates()
-        );
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setName(user.getName());
+        userResponseDto.setEmail(user.getEmail());
+        userResponseDto.setBio(user.getBio());
+        userResponseDto.setProfilePic(user.getProfilePic());
+        userResponseDto.setLocation(user.getLocation());
+        userResponseDto.setLinkedinUrl(user.getLinkedinUrl());
+        userResponseDto.setGithubUrl(user.getGithubUrl());
+        userResponseDto.setProjects(user.getProjects());
+        userResponseDto.setSkills(user.getSkills());
+        userResponseDto.setExperiences(user.getExperiences());
+        userResponseDto.setEducationList(user.getEducationList());
+        userResponseDto.setContacts(user.getContacts());
+        userResponseDto.setCertificates(user.getCertificates());
+        return userResponseDto;
     }
+
 
 
     // Convert UserResponseDto to User entity

@@ -21,9 +21,9 @@ public class UserDao {
         return userRepository.findByEmail(emailId).orElseThrow(EntityExistsException::new);
     }
 
-    public User updateUser(UserResponseDto userResponseDto, String emailId) {
+    public UserResponseDto updateUser(UserResponseDto userResponseDto, String emailId) {
         Optional<User> user = userRepository.findByEmail(emailId);
         User updateUser = UserMapper.toEntity(userResponseDto, user.get());
-        return userRepository.save(updateUser);
+        return UserMapper.toDto(updateUser);
     }
 }

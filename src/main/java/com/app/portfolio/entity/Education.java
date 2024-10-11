@@ -4,10 +4,12 @@ package com.app.portfolio.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
 @Table(name = "Education")
+@ToString(exclude = "user")
 public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
