@@ -12,7 +12,9 @@ RUN npm install --legacy-peer-deps
 # Copy the application source code
 COPY . .
 
-COPY /etc/secrets/.env .
+# Copy the .env file into the container
+# Make sure to replace '/etc/secrets/.env' with the appropriate path
+# COPY /etc/secrets/.env ./
 
 # Build the application
 RUN npm run build
@@ -31,6 +33,9 @@ RUN rm -rf ./*
 
 # Copy the build output from the build stage
 COPY --from=nodework /myapp/dist .
+
+# Optionally, copy the .env file to the Nginx container if needed (not recommended for production)
+COPY --from=nodework /myapp/.env ./
 
 # Default command to run Nginx
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
