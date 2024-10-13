@@ -12,6 +12,8 @@ RUN npm install --legacy-peer-deps
 # Copy the application source code
 COPY . .
 
+COPY /etc/secrets/.env .
+
 # Build the application
 RUN npm run build
 
