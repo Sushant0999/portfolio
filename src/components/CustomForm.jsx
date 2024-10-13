@@ -10,10 +10,11 @@ import {
   Grid,
 } from '@mui/material';
 import InputList from './InputList';
+import { updateUser } from '../service/updateUser';
 
 const CustomForm = ({ userData }) => {
 
-  console.log(userData.certificates );
+  console.log(userData.certificates);
 
   const [formData, setFormData] = useState({
     name: userData?.name || '',
@@ -47,10 +48,12 @@ const CustomForm = ({ userData }) => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Form Data:', formData);
     // Handle form submission logic here (e.g., send to an API)
+    const data = await updateUser(formData);
+    console.log(data);
   };
 
   return (

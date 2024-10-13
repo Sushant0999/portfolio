@@ -11,14 +11,15 @@ import {
 } from '@mui/material';
 import { getToken } from '../service/login';
 import { useNavigate } from 'react-router-dom';
+import AlertComponent from '../components/AlertComponent';
 
-
-export default function login() {
+export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [emailError, setEmailError] = React.useState('');
   const [passwordError, setPasswordError] = React.useState('');
+  const [alertData, setAlertData] = React.useState(null); // Fixed state initialization
 
   const validateInputs = () => {
     let valid = true;
@@ -46,9 +47,11 @@ export default function login() {
       console.log('Password:', password);
       const data = await getToken(email, password);
       if (data.success) {
+        setAlertData({ severity: 'success', title: 'Login Successful', message: 'You have logged in successfully!' });
         navigate('/dashboard');
       } else {
         console.error(data.message);
+        setAlertData({ severity: 'error', title: 'Login Failed', message: data.message });
       }
     }
   };
@@ -93,6 +96,13 @@ export default function login() {
           </Typography>
         </Box>
       </Card>
+      {alertData && (
+        <AlertComponent
+          severity={alertData.severity}
+          title={alertData.title}
+          message={alertData.message}
+        />
+      )}
     </Container>
   );
 }

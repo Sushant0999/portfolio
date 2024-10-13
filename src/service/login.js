@@ -25,7 +25,7 @@ export const getToken = async (email, password) => {
         }
 
         const data = await response.json();
-        sessionStorage.setItem('userData', JSON.stringify(data));
+        sessionStorage.setItem('token', JSON.stringify(data.token));
         return {
             success: true,
             message: `login successfull!!!`
