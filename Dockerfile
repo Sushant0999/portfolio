@@ -35,7 +35,7 @@ RUN rm -rf ./*
 COPY --from=nodework /myapp/dist .
 
 # Optionally, copy the .env file to the Nginx container if needed (not recommended for production)
-COPY --from=nodework /myapp/.env ./
+COPY --from=nodework /etc/secrets/.env ./
 
 # Default command to run Nginx
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
