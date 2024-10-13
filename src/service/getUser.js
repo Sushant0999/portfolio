@@ -1,7 +1,6 @@
 export const getUser = async () => {
-    // const baseUrl = import.meta.env.VITE_REACT_URL; // Use VITE_ prefix
-    const baseUrl = "https://run.mocky.io/v3/0526d494-49e9-4cf2-9ba7-b8252039bec0"
-    const url = `${baseUrl}/user`; // Declare 'url' using const
+    const baseUrl = import.meta.env.VITE_REACT_URL;
+    const url = `${baseUrl}/api/v1/user/get/user?emailId=string`;
 
     try {
         const response = await fetch(url, {
@@ -14,11 +13,10 @@ export const getUser = async () => {
                 message: `${errorData.detail}!!!`
             };
         }
-
-        return response.json();
+        const userData = await response.json();
+        return userData;
 
     } catch (error) {
-        // console.error('Error during signup:', error);
         return null;
     }
 };

@@ -1,125 +1,108 @@
 import React, { useState, useEffect } from 'react';
 import CustomAppBar from '../components/appBar';
-import { Box, Typography, Container, Paper } from '@mui/material';
+import { Box, Typography, Container } from '@mui/material';
 import '../css/home.css';
 import { getUser } from '../service/getUser';
 import CustomBubble from '../components/CustomBubble';
 import MenuBar from './ProjectMenuBar';
+import CustomLoading from '../components/CustomLoading';
+import VerticalLinearStepper from '../components/VerticalStepper';
+
 
 export default function Home() {
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
-    // Define the async function to fetch user data
     const getData = async () => {
       try {
-        const data = await getUser(); // Call the getUser service
-        setUserData(data); // Set the fetched data to state
-        setLoading(false); // Set loading to false after data is fetched
+        const data = await getUser();
+        setUserData(data.results);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching user data:', error);
-        setLoading(false); // Stop loading if an error occurs
+        setLoading(false);
       }
     };
-
-    getData(); // Call the async function when the component mounts
+    getData();
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading indicator while waiting for the data
+    return <div><CustomLoading /></div>;
   }
 
   return (
     <div>
       <CustomAppBar />
       <Container maxWidth={false} disableGutters>
-        <Box 
-          sx={{ 
-            margin: '20px 0', 
-            padding: '20px', 
+        <Box
+          sx={{
+            margin: '20px 0',
+            padding: '20px',
             textAlign: 'center',
-            minHeight: '90vh', 
+            minHeight: '90vh',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'darkblue'
+            // backgroundColor: 'darkblue'
           }}
         >
           <Typography variant='h6'>
             Hello, I am
           </Typography>
-          <Typography variant='h1'>
-            {userData?.name} {/* Display fetched user name */}
+          <Typography variant='h1' className='threeD'>
+            {userData?.name || "NaN"}
           </Typography>
           <Typography variant='body1'>
-            {userData?.bio} {/* Display fetched user bio */}
+            {userData?.bio || "Nan"}
           </Typography>
         </Box>
 
-        {/* Experience Section */}
-        <Box 
+
+        <Box
           id="experience"
-          sx={{ 
-            margin: '20px 0', 
+          sx={{
+            margin: '20px 0',
             padding: '20px',
-            minHeight: '100vh',  // Full screen height for experience
+            minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            backgroundColor: 'teal'
+            // backgroundColor: 'teal'
 
           }}
         >
-          <Typography variant='h4' gutterBottom>
-            Experience
-          </Typography>
-          <Typography variant='body1'>
-            {/* Experience details */}
-            - Over 1 year of experience with Java Spring Boot and FastAPI.
-            <br />
-            - Worked on Management Information System (MIS) portals.
-            <br />
-            - Expertise in MLOps integration and secured endpoints with JWT.
-          </Typography>
+          <VerticalLinearStepper experienceList={userData.experiences} />
         </Box>
 
         {/* Projects Section */}
-        <Box 
+        <Box
           id="projects"
-          sx={{ 
-            margin: '20px 0', 
+          sx={{
+            margin: '20px 0',
             padding: '0 20px 0 20px',
             minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
-            // justifyContent: 'center',
-            backgroundColor: 'purple'
+            // backgroundColor: 'purple'
           }}
         >
-          {/* <Typography variant='h4' gutterBottom>
-            Projects
-          </Typography>
-          <Typography variant='body1'>
-            - Developed a case study module to allow sorting and marketing team acceptance.
-            <br />
-            - Implemented multiple @Scheduled tasks in a Spring Boot application.
-          </Typography> */}
-          <MenuBar />
+          <MenuBar projectList={userData.projects}/>
         </Box>
 
         {/* Skills Section */}
-        <Box 
+        <Box
           id="skills"
-          sx={{ 
-            margin: '20px 0', 
+          sx={{
+            margin: '20px 0',
             padding: '20px',
-            minHeight: '100vh',  // Full screen height for skills
+            minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            backgroundColor: 'skyblue'
+            // backgroundColor: 'skyblue'
           }}
         >
           <Typography variant='h4' gutterBottom>

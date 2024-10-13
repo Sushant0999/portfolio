@@ -7,7 +7,6 @@ const Project = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    // Fetch projects based on type
     fetch(`/api/projects?type=${type}`)
       .then(response => response.json())
       .then(data => setProjects(data))
